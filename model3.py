@@ -82,7 +82,7 @@ import os
 from semantic_router.encoders import CohereEncoder, OpenAIEncoder
 
 # for Cohere
-os.environ["COHERE_API_KEY"] = "4Lh5iCY5nc63ep5c4E9KLIFp1maSab4dAwgtAe5h"
+os.environ["COHERE_API_KEY"] = ""
 encoder = CohereEncoder()
 
 # # or for OpenAI
