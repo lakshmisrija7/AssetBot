@@ -85,9 +85,7 @@ from semantic_router.encoders import CohereEncoder, OpenAIEncoder
 os.environ["COHERE_API_KEY"] = ""
 encoder = CohereEncoder()
 
-# # or for OpenAI
-# os.environ["OPENAI_API_KEY"] = "<YOUR_API_KEY>"
-# encoder = OpenAIEncoder()
+
 r1 = RouteLayer(encoder=encoder, routes=routes)
 print("routing completed")
 DB_FAISS_PATH = 'demovs3'
@@ -110,11 +108,6 @@ Answer:
 """
 
 
-# Analyse the context carefully and understand the details that are provided in the context.
-# Analyse and understand the question carefully.
-# Based on the question asked search for the exact answer for the question in the context.
-# If there is no context that could be the answer for the question asked just say that You have no information regarding that.
-# Don't mention that company will return your money back. 
 def set_custom_prompt():
     prompt = PromptTemplate(template=template,
                             input_variables=['context', 'question'])
@@ -162,75 +155,9 @@ def qa_bot():
 faithfulness_chain = RagasEvaluatorChain(metric=faithfulness) 
 answer_rel_chain = RagasEvaluatorChain(metric=answer_relevancy) 
 context_rel_chain = RagasEvaluatorChain(metric=context_precision) 
-# context_recall_chain = RagasEvaluatorChain(metric=context_recall)
-# answer_correctness=RagasEvaluatorChain(metric=answer_correctness)
-#answer_semantic_similarity=RagasEvaluatorChain(metric=answer_semantic_similarity)
-# chain2,retriever2 = qa_bot()
 @cl.on_chat_start
 async def start():
     chain,retriever = qa_bot()
-#     questions = [
-#     "What is AssetSense?",
-#     "Give Testimonials Of AssetSense Company?"
-#     "What specific technologies does AssetSense utilize to ensure immediate value realization and rapid ROI?",
-#     "According to the content, how does AssetSense support power plant executives in making informed decisions?",
-#     "Can you explain how AssetSense's platform automation helps in capturing vibration data and performing predictive maintenance?",
-#     "How does AssetSense cater to different types of power generation, such as fossil fuel, hydro, wind, and biofuel, as mentioned in the content?",
-#     "What challenges do power plants face in terms of integrating digital technologies with existing systems, and how does AssetSense overcome these challenges?",
-#     "How does AssetSense address the limitations of traditional asset monitoring systems, as highlighted in the content?",
-#     "What is the role of mobile apps in AssetSense, and how do they contribute to the ease of completing key tasks for users?",
-#     "Could you elaborate on the benefits of AssetSense's plug-and-play integrations with key systems like ERPs, historians, and enterprise asset management tools?",
-#     "In what ways does AssetSense enhance plant efficiencies, and how does it contribute to the overall reliability of equipment in power generation?",
-#     "What is the significance of AssetSense's private cloud in terms of security, performance, and reliability, as mentioned in the content?",
-#     "How does AssetSense assist power plant managers, maintenance crews, and operators in monitoring equipment health and improving plant performance?",
-#     "What is the significance of digital transformation for power generation companies in the context of market conditions and regulatory demands, as per the World Economic Forum and Deloitte survey?",
-#     "According to the content, why is Asset Performance Management considered the single most valuable initiative for the electricity industry?",
-#     "Can you provide examples of real-time insights that power plant executives can gain from using AssetSense, and how do these insights contribute to improving asset reliability?",
-#     "What role does AssetSense play in elevating fleet-wide performance, and how does it contribute to lowering IT costs for power generation companies?"
-# ]
-#     print("questons")
-#     print("questions")
-#     # ground_truths = [["The president said that Justice Breyer has dedicated his life to serve the country and thanked him for his service."],
-#     #                 ["The president said that Pat Gelsinger is ready to increase Intel's investment to $100 billion."],
-#     # #                 ["The president asked Congress to pass proven measures to reduce gun violence."]]
-#     answers = []
-#     contexts = []
-    
-#     # Inference
-#     for query in questions:
-#       answers.append(chain.invoke(query)['result'])
-#       ret_docs = retriever.get_relevant_documents(query)
-#       contexts.append([docs.page_content for docs in ret_docs])
-#     print("answers contexts created")
-    
-#     # To dict
-#     data = {
-#         "question": questions,
-#         "answer": answers,
-#         "contexts": contexts,
-#     # "ground_truths": ground_truths
-#     }
-#     print("Data created")
-    
-#     # Convert dict to dataset
-#     dataset = Dataset.from_dict(data)
-#     print("dataset created")
-#     print("dataset created")
-#     print("dataset created")
-    
-#     result = evaluate(
-#         dataset = dataset,
-#         metrics=[
-#             context_precision,
-#             faithfulness,
-#             answer_relevancy,
-#             harmfulness
-#         ],
-#     )
-    
-#     print(result)
-#     df = result.to_pandas()
-#     print(df)
     msg = cl.Message(content="Starting the bot...")
     await msg.send()
     msg.content = "Hi, Welcome to  AssetBot. What is your query?"
